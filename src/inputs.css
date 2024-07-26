@@ -1,0 +1,26 @@
+.input-cont{
+    display: flex;
+    gap: 1.5em;
+}
+
+
+p{
+    font-size: 0.8rem;
+    font-family: bold;
+    color: hsl(0, 1%, 44%);
+}
+
+input{
+    width: 7.5rem;
+    height: 3rem;
+    border-radius: 5px;
+    border: 1px solid hsl(0, 0%, 86%);
+    font-size: 1.5rem;
+    font-family: extraBold;
+    padding: 0 1rem;
+    outline: none;
+}
+
+input:hover{
+    outline: 2px solid hsl(259, 100%, 65%);
+}

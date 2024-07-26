@@ -1,0 +1,12 @@
+.content{
+    display: flex;
+}
+
+h1:first-child{
+    color: hsl(259, 100%, 65%);
+}
+
+h1{
+    font-family: extraBoldItalic;
+    font-size: 3rem;
+}

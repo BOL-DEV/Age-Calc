@@ -1,0 +1,13 @@
+.submit-cont{
+    margin: 2em 0;
+}
+
+button{
+    background-color: hsl(259, 100%, 65%);
+    border-radius: 50%;
+    border: none;
+    padding: 0.5em;
+    position: absolute;
+    top: 35%;
+    right: 32%;
+}
