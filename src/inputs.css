@@ -24,3 +24,19 @@ input{
 input:hover{
     outline: 2px solid hsl(259, 100%, 65%);
 }
+
+.error{
+    color: red;
+    font-weight: 100;
+    font-family: regular;
+    font-size: 12px;
+}
+
+@media  (max-width: 767px) {
+  input{
+  width: 5rem;  
+  font-size: 1rem;
+  padding: 0 0.5rem;
+  }
+}
+
