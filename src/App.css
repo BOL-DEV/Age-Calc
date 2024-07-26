@@ -21,3 +21,11 @@
   border-bottom-right-radius: 7em;
   padding: 2em;
 }
+
+@media  (max-width: 767px) {
+  .container{
+    width: 90%
+  }
+}
+
+

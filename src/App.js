@@ -1,127 +1,91 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Inputs from "./inputs";
-import Submit from "./submit";
 import Output from "./output";
+import Submit from "./submit";
 
-function App() {
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+const App = () => {
+  const [birthDay, setBirthDay] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [age, setAge] = useState({ years: "--", months: "--", days: "--" });
+  const [errors, setErrors] = useState({ day: "", month: "", year: "" });
 
-  const handleDate = (value, date) => {
-    date === "DAY" && setDay(value);
-    date === "MONTH" && setMonth(value);
-    date === "YEAR" && setYear(value);
+  const handleDate = (value, title) => {
+    if (title === "DAY") {
+      setBirthDay(value);
+      setErrors((prev) => ({ ...prev, day: validateDay(value) }));
+    } else if (title === "MONTH") {
+      setBirthMonth(value);
+      setErrors((prev) => ({ ...prev, month: validateMonth(value) }));
+    } else if (title === "YEAR") {
+      setBirthYear(value);
+      setErrors((prev) => ({ ...prev, year: validateYear(value) }));
+    }
   };
 
-  const date = new Date();
-  const curYear = date.getFullYear();
-  const curMonth = date.getMonth() + 1;
-  const curDay = +date.toDateString().slice(8, 10);
+  const validateDay = (day) => {
+    if (!day) return "Day is required";
+    return day < 1 || day > 31 ? "Invalid day" : "";
+  };
 
-  let birthDay;
-  let birthMonth;
-  let birthYear;
+  const validateMonth = (month) => {
+    if (!month) return "Month is required";
+    return month < 1 || month > 12 ? "Invalid month" : "";
+  };
+
+  const validateYear = (year) => {
+    if (!year) return "Year is required";
+    const currentYear = new Date().getFullYear();
+    return year > currentYear ? "Invalid year" : "";
+  };
+
+  const calculateAge = () => {
+    const birthDate = new Date(`${birthYear}-${birthMonth}-${birthDay}`);
+    const today = new Date();
+
+    let years = today.getFullYear() - birthDate.getFullYear();
+    let months = today.getMonth() - birthDate.getMonth();
+    let days = today.getDate() - birthDate.getDate();
+
+    if (days < 0) {
+      months -= 1;
+      days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    setAge({ years, months, days });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(curYear);
-    // console.log(curMonth);
-    // console.log(curDay);
+    const dayError = validateDay(birthDay);
+    const monthError = validateMonth(birthMonth);
+    const yearError = validateYear(birthYear);
 
-    // console.log(year);
-    // console.log(month);
-    // console.log(day);
+    setErrors({ day: dayError, month: monthError, year: yearError });
 
-    if (day === "" && month === "" && year === "") return;
-    birthYear = curYear - year;
-    birthMonth = curMonth - month;
-    birthDay = curDay - day;
-
-    // console.log(birthYear);
-    // console.log(birthMonth);
-    // console.log(birthDay);
+    if (!dayError && !monthError && !yearError) {
+      calculateAge();
+    }
   };
 
   return (
     <div className="App">
       <div className="container">
-        <Inputs handleDate={handleDate} />
+        <Inputs handleDate={handleDate} errors={errors} />
         <Submit handleSubmit={handleSubmit} />
         <Output
-          birthYear={birthYear}
-          birthMonth={birthMonth}
-          birthDay={birthDay}
+          birthYear={age.years}
+          birthMonth={age.months}
+          birthDay={age.days}
         />
       </div>
     </div>
   );
-}
+};
 
 export default App;
-
-// import { useState } from "react";
-// import "./App.css";
-// import Inputs from "./inputs";
-// import Submit from "./submit";
-// import Output from "./output";
-
-// function App() {
-//   const [day, setDay] = useState("");
-//   const [month, setMonth] = useState("");
-//   const [year, setYear] = useState("");
-//   const [age, setAge] = useState({ years: "--", months: "--", days: "--" });
-
-//   const handleDate = (value, date) => {
-//     if (date === "DAY") setDay(value);
-//     if (date === "MONTH") setMonth(value);
-//     if (date === "YEAR") setYear(value);
-//   };
-
-//   const handleSubmit = () => {
-//     const isValidDate = (day, month, year) => {
-//       const date = new Date(year, month - 1, day);
-//       return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
-//     };
-
-//     const calculateAge = (birthDay, birthMonth, birthYear) => {
-//       if (!isValidDate(birthDay, birthMonth, birthYear)) {
-//         return { years: "--", months: "--", days: "--" };
-//       }
-
-//       const currentDate = new Date();
-//       const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
-
-//       let years = currentDate.getFullYear() - birthDate.getFullYear();
-//       let months = currentDate.getMonth() - birthDate.getMonth();
-//       let days = currentDate.getDate() - birthDate.getDate();
-
-//       if (days < 0) {
-//         months -= 1;
-//         days += new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-//       }
-
-//       if (months < 0) {
-//         years -= 1;
-//         months += 12;
-//       }
-
-//       return { years, months, days };
-//     };
-
-//     setAge(calculateAge(day, month, year));
-//   };
-
-//   return (
-//     <div className="App">
-//       <div className="container">
-//         <Inputs day={day} month={month} year={year} handleDate={handleDate} />
-//         <Submit handleSubmit={handleSubmit} />
-//         <Output age={age} />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;

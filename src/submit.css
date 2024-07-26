@@ -11,3 +11,16 @@ button{
     top: 35%;
     right: 32%;
 }
+
+button:hover{
+    background-color: black;
+}
+
+@media  (max-width: 767px) {
+  button{
+    right: 40%;
+    top: 37%;
+    margin-bottom: 1rem;
+
+  }
+}
